@@ -15,7 +15,6 @@ int highpass = 0;
 int bandpass = 0;
  
 void setup(){
-  Serial.begin(115200);                   //setup of Serial module, 115200 bits/second
    
   EMA_S_low = analogRead(sensorPin);      //set EMA S for t=1
   EMA_S_high = analogRead(sensorPin);
