@@ -3,7 +3,6 @@
 #include "MIDIUSB.h"
 
 //Global Variables
-int sensorPin = 0;        //pin number to use the ADC
 int sensorValue = 0;      //initialization of sensor variable, equivalent to EMA Y
  
 
@@ -17,7 +16,7 @@ void sendControlChange(byte channel, byte control, byte value) {
 }
  
 void loop(){
-  sensorValue = analogRead(sensorPin);    //read the sensor value using ADC
+  sensorValue = analogRead(A0);    //read the sensor value using ADC
 
   sendControlChange (0,32,map(sensorValue,0,1023,0,127));
   MidiUSB.flush();
