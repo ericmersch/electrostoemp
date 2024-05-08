@@ -21,7 +21,7 @@ void loop() {
   int potValue = analogRead(A0);
   if (lastPotValue != potValue){
     controlChange(0, 50, map(potValue,0,1023,0,127));
-    
+    MidiUSB.flush();
   }
   lastPotValue = potValue;
 }
