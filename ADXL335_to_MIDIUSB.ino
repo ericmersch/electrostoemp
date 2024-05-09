@@ -37,14 +37,14 @@ void loop(){
     if (State) {
       
       
-      noteOn(1,69,120);
+      noteOn(0,69,120);
       MidiUSB.flush();
       delay(100);
     } 
     else {
       // if the current state is LOW then the button
       // wend from on to off:
-      noteOff(1,69,120);
+      noteOff(0,69,120);
       MidiUSB.flush();
     }
   }
