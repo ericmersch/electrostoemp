@@ -8,20 +8,19 @@ void controlChange(byte channel, byte control, byte value) {
 int sensorPin = 0;        //pin number to use the ADC
 int sensorValue = 0;      //initialization of sensor variable, equivalent to EMA Y
  
-float EMA_a_low = 0.3;    //initialization of EMA alpha
-float EMA_a_high = 0.5;
+float a = 0.3;    //initialization of EMA alpha
+float b = 0.5;
  
-int EMA_S_low = 0;        //initialization of EMA S
-int EMA_S_high = 0;
- 
-int highpass = 0;
+float y1 = 0;        //initialization of EMA S
+float y2 = 0;
+
 float bandpass = 0;
  
 void setup(){
   Serial.begin(9600);                   //setup of Serial module, 115200 bits/second
    
-  EMA_S_low = analogRead(sensorPin);      //set EMA S for t=1
-  EMA_S_high = analogRead(sensorPin);
+  y1 = analogRead(sensorPin);      //set EMA S for t=1
+  y2 = analogRead(sensorPin);
 }
  
 void loop(){
@@ -29,14 +28,15 @@ void loop(){
   for(int i = 0; i<250; i++){
   sensorValue += analogRead(sensorPin);    //read the sensor value using ADC
   } 
-  EMA_S_low = (EMA_a_low*sensorValue) + ((1-EMA_a_low)*EMA_S_low);  //run the EMA
-  EMA_S_high = (EMA_a_high*sensorValue) + ((1-EMA_a_high)*EMA_S_high);
+  y1 = a*sensorValue + (1-a)*y1;  //run the EMA
+  y2 = b*sensorValue + (1-b)*y2;
   
-  bandpass = ((EMA_S_high - EMA_S_low));      //find the band-pass
+  bandpass = y2 - y1;      //find the band-pass
   
-  controlChange (0,32,min(127,max(map(atan(bandpass/20),0,PI/2.,0,127),0)));
+  controlChange (0,32,max(map(atan(bandpass/20),0,PI/2.,0,127),0)); //sigmoid and threshold
   MidiUSB.flush();
 
   Serial.println(bandpass);
    
+  //delay(1);                              //20ms delay
 }
