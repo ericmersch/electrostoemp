@@ -24,4 +24,5 @@ void loop() {
     MidiUSB.flush();
   }
   lastPotValue = potValue;
+  delay(20);
 }
