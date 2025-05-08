@@ -33,10 +33,10 @@ void loop(){
   
   bandpass = y2 - y1;      //find the band-pass
   
-  controlChange (0,32,max(map(atan(bandpass/20),0,PI/2.,0,127),0)); //sigmoid and threshold
+  controlChange (0, 32, max(0,atan((120+bandpass) / 120.)*80.8507)); //sigmoid and threshold
   MidiUSB.flush();
 
-  Serial.println(bandpass);
+  Serial.println(max(0,atan((120+bandpass) / 120.)*80.8507));
    
   //delay(1);                              //20ms delay
 }
